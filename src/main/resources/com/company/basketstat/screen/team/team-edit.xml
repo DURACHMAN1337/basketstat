@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://teamEdit.caption"
+        focusComponent="form">
+    <data>
+        <instance id="teamDc"
+                  class="com.company.basketstat.entity.Team">
+            <fetchPlan extends="_base">
+                <property name="players" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader/>
+        </instance>
+        <collection id="playersDc"
+                    class="com.company.basketstat.entity.Player">
+            <fetchPlan extends="_base"/>
+            <loader id="playersDl">
+                <query>
+                    <![CDATA[select e from bst_Player e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="windowCommitAndClose" caption="msg:///actions.Ok"
+                icon="EDITOR_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="windowClose"
+                caption="msg:///actions.Close"
+                icon="EDITOR_CANCEL"/>
+    </actions>
+    <dialogMode height="400"
+                width="600" forceDialog="true"/>
+    <layout spacing="true" expand="editActions">
+        <form id="form" dataContainer="teamDc">
+            <column width="350px">
+                <textField id="nameField" property="name" caption="msg://nameField.caption"/>
+                <tagPicker id="playersPicker"
+                           dataContainer="teamDc"
+                           property="players"
+                           optionsContainer="playersDc"
+                           caption="msg://playersPicker.caption">
+                    <actions>
+                        <action id="lookup" type="tag_lookup"/>
+                        <action id="clear" type="value_clear"/>
+                    </actions>
+                </tagPicker>
+            </column>
+        </form>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

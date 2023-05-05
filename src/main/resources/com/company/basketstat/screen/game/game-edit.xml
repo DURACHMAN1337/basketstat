@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://gameEdit.caption">
+    <data>
+        <instance id="gameDc"
+                  class="com.company.basketstat.entity.Game">
+            <fetchPlan extends="_base">
+                <property name="teamOne" fetchPlan="_base">
+                    <property name="players" fetchPlan="_base"/>
+                </property>
+                <property name="teamTwo" fetchPlan="_base">
+                    <property name="players" fetchPlan="_base"/>
+                </property>
+                <property name="gameResult" fetchPlan="_base">
+                    <property name="winner" fetchPlan="_base">
+                        <property name="players" fetchPlan="_base"/>
+                    </property>
+                    <property name="loser" fetchPlan="_base">
+                        <property name="players" fetchPlan="_base"/>
+                    </property>
+                </property>
+            </fetchPlan>
+            <loader/>
+        </instance>
+        <collection id="teamOneDc" class="com.company.basketstat.entity.Player" fetchPlan="_base">
+            <loader id="teamOneDl">
+                <query>
+                    <![CDATA[select e from bst_Player e where e.team = :teamOne]]>
+                </query>
+            </loader>
+        </collection>
+        <collection id="teamTwoDc" class="com.company.basketstat.entity.Player" fetchPlan="_base">
+            <loader id="teamTwoDl">
+                <query>
+                    <![CDATA[select e from bst_Player e where e.team = :teamTwo]]>
+                </query>
+            </loader>
+        </collection>
+        <collection id="teamOneStatsDc" class="com.company.basketstat.entity.PlayerGameStat">
+            <fetchPlan extends="_base">
+                <property name="player" fetchPlan="_base">
+                    <property name="team" fetchPlan="_base"/>
+                </property>
+                <property name="game" fetchPlan="_base"/>
+                <property name="statistic" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="teamOneStatsDl">
+                <query>
+                    <![CDATA[select e from bst_PlayerGameStat e where e.player = :teamOnePlayer and e.game = :game]]>
+                </query>
+            </loader>
+        </collection>
+        <collection id="teamTwoStatsDc" class="com.company.basketstat.entity.PlayerGameStat">
+            <fetchPlan extends="_base">
+                <property name="player" fetchPlan="_base">
+                    <property name="team" fetchPlan="_base"/>
+                </property>
+                <property name="game" fetchPlan="_base"/>
+                <property name="statistic" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="teamTwoStatsDl">
+                <query>
+                    <![CDATA[select e from bst_PlayerGameStat e where e.player = :teamTwoPlayer and e.game = :game]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="windowCommitAndClose" caption="msg:///actions.Ok"
+                icon="EDITOR_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="windowClose"
+                caption="msg:///actions.Close"
+                icon="EDITOR_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout spacing="true" expand="teamsSplit">
+        <split id="teamsSplit" width="100%" orientation="horizontal" pos="60">
+            <vbox id="teamOneScoreBox"
+                  align="TOP_CENTER"
+                  height="100%"
+                  spacing="true"
+                  expand="teamOneStatsTableBox">
+                <vbox id="teamOneLabelsBox"
+                      align="TOP_CENTER"
+                      width="100%">
+                    <label id="teamOneNameLabel"
+                           align="TOP_CENTER"
+                           stylename="h2 bold"/>
+
+                    <label id="teamOneScoreLabel"
+                           align="TOP_CENTER"
+                           stylename="h1 bold"/>
+
+                    <entityPicker id="teamOneField"
+                                  align="TOP_CENTER"
+                                  dataContainer="gameDc" property="teamOne">
+                        <actions>
+                            <action id="entityLookup" type="entity_lookup"/>
+                            <action id="entityClear" type="entity_clear"/>
+                        </actions>
+                    </entityPicker>
+                </vbox>
+                <table id="teamOneTable"
+                       caption="msg://teamOneTable.caption"
+                       captionAsHtml="true"
+                       stylename="borderless no-horizontal-lines no-vertical-lines"
+                       dataContainer="teamOneDc" align="BOTTOM_CENTER">
+                    <columns>
+                        <column id="name"/>
+                        <column id="surname"/>
+                        <column id="number"/>
+                    </columns>
+                </table>
+                <vbox id="teamOneStatsTableBox" width="100%">
+                    <table id="teamOneStatsTable"
+                           caption="msg://teamTwoStatsTable"
+                           dataContainer="teamOneStatsDc"
+                           width="AUTO"
+                           align="TOP_CENTER">
+                        <columns>
+                            <column id="statistic.freeThrowMade" caption="msg://statistic.freeThrowMade"
+                                    description="msg://statistic.freeThrowMade.description"/>
+                            <column id="statistic.freeThrowMiss" caption="msg://statistic.freeThrowMiss"
+                                    description="msg://statistic.freeThrowMiss.description"/>
+                            <column id="statistic.twoPointMade" caption="msg://statistic.twoPointMade"
+                                    description="msg://statistic.twoPointMade.description"/>
+                            <column id="statistic.twoPointMiss" caption="msg://statistic.twoPointMiss"
+                                    description="msg://statistic.twoPointMiss.description"/>
+                            <column id="statistic.threePointMade" caption="msg://statistic.threePointMade"
+                                    description="msg://statistic.threePointMade.description"/>
+                            <column id="statistic.threePointMiss" caption="msg://statistic.threePointMiss"
+                                    description="msg://statistic.threePointMiss.description"/>
+                            <column id="statistic.assist" caption="msg://statistic.assist"
+                                    description="msg://statistic.assist.description"/>
+                            <column id="statistic.block" caption="msg://statistic.block"
+                                    description="msg://statistic.block.description"/>
+                            <column id="statistic.foul" caption="msg://statistic.foul"
+                                    description="msg://statistic.foul.description"/>
+                            <column id="statistic.rebound" caption="msg://statistic.rebound"
+                                    description="msg://statistic.rebound.description"/>
+                            <column id="statistic.steal" caption="msg://statistic.steal"
+                                    description="msg://statistic.steal.description"/>
+                            <column id="statistic.turnOver" caption="msg://statistic.turnOver"
+                                    description="msg://statistic.turnOver.description"/>
+                        </columns>
+                    </table>
+                </vbox>
+            </vbox>
+
+            <vbox id="teamTwoScoreBox"
+                  spacing="true"
+                  align="TOP_CENTER"
+                  height="100%"
+                  expand="teamTwoStatsTableBox">
+                <vbox id="teamTwoLabelsBox" width="100%">
+                    <label id="teamTwoNameLabel"
+                           align="TOP_CENTER"
+                           stylename="h2 bold"/>
+
+                    <label id="teamTwoScoreLabel"
+                           align="TOP_CENTER"
+                           stylename="h1 bold"/>
+
+                    <entityPicker id="teamTwoField"
+                                  align="TOP_CENTER"
+                                  property="teamTwo"
+                                  dataContainer="gameDc">
+                        <actions>
+                            <action id="entityLookup" type="entity_lookup"/>
+                            <action id="entityClear" type="entity_clear"/>
+                        </actions>
+                    </entityPicker>
+                </vbox>
+                <table id="teamTwoTable"
+                       caption="msg://teamTwoTable.caption"
+                       stylename="borderless no-horizontal-lines no-vertical-lines"
+                       dataContainer="teamTwoDc"
+                       width="AUTO"
+                       align="BOTTOM_CENTER">
+                    <columns>
+                        <column id="name"/>
+                        <column id="surname"/>
+                        <column id="number"/>
+                    </columns>
+                </table>
+                <vbox id="teamTwoStatsTableBox" width="100%">
+                    <table id="teamTwoStatsTable"
+                           caption="msg://teamTwoStatsTable"
+                           dataContainer="teamTwoStatsDc"
+                           width="AUTO"
+                           align="TOP_CENTER">
+                        <columns>
+                            <column id="statistic.freeThrowMade" caption="msg://statistic.freeThrowMade"
+                                    description="msg://statistic.freeThrowMade.description"/>
+                            <column id="statistic.freeThrowMiss" caption="msg://statistic.freeThrowMiss"
+                                    description="msg://statistic.freeThrowMiss.description"/>
+                            <column id="statistic.twoPointMade" caption="msg://statistic.twoPointMade"
+                                    description="msg://statistic.twoPointMade.description"/>
+                            <column id="statistic.twoPointMiss" caption="msg://statistic.twoPointMiss"
+                                    description="msg://statistic.twoPointMiss.description"/>
+                            <column id="statistic.threePointMade" caption="msg://statistic.threePointMade"
+                                    description="msg://statistic.threePointMade.description"/>
+                            <column id="statistic.threePointMiss" caption="msg://statistic.threePointMiss"
+                                    description="msg://statistic.threePointMiss.description"/>
+                            <column id="statistic.assist" caption="msg://statistic.assist"
+                                    description="msg://statistic.assist.description"/>
+                            <column id="statistic.block" caption="msg://statistic.block"
+                                    description="msg://statistic.block.description"/>
+                            <column id="statistic.foul" caption="msg://statistic.foul"
+                                    description="msg://statistic.foul.description"/>
+                            <column id="statistic.rebound" caption="msg://statistic.rebound"
+                                    description="msg://statistic.rebound.description"/>
+                            <column id="statistic.steal" caption="msg://statistic.steal"
+                                    description="msg://statistic.steal.description"/>
+                            <column id="statistic.turnOver" caption="msg://statistic.turnOver"
+                                    description="msg://statistic.turnOver.description"/>
+                        </columns>
+                    </table>
+                </vbox>
+            </vbox>
+        </split>
+        <hbox id="editActions" spacing="true" align="TOP_CENTER">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose" caption="msg://endMatchBtn.caption"
+                    align="TOP_CENTER" visible="false"/>
+            <button id="startGameBtn" caption="msg://startGameBtn.caption" align="TOP_CENTER"
+                    icon="font-icon:PLAY_CIRCLE"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

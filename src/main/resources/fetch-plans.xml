@@ -1,0 +1,8 @@
+<fetchPlans xmlns="http://jmix.io/schema/core/fetch-plans">
+    <fetchPlan entity="bst_PlayerStatistic"
+               class="com.company.basketstat.entity.PlayerStatistic"
+               name="player-stat-full" extends="_base">
+        <property name="statistic" fetchPlan="_base"/>
+        <property name="player" fetchPlan="_base"/>
+    </fetchPlan>
+</fetchPlans>

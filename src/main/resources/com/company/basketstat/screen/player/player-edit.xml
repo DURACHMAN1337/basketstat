@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://playerEdit.caption"
+        focusComponent="form">
+    <data>
+        <instance id="playerDc"
+                  class="com.company.basketstat.entity.Player">
+            <fetchPlan extends="_base">
+                <property name="team" fetchPlan="_base">
+                    <property name="players" fetchPlan="_base"/>
+                </property>
+            </fetchPlan>
+            <loader/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="windowCommitAndClose" caption="msg:///actions.Ok"
+                icon="EDITOR_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="windowClose"
+                caption="msg:///actions.Close"
+                icon="EDITOR_CANCEL"/>
+    </actions>
+    <dialogMode height="AUTO"
+                width="AUTO"
+                modal="true"
+                forceDialog="true"/>
+    <layout spacing="true" expand="editActions">
+        <form id="form" dataContainer="playerDc">
+            <column width="350px">
+                <textField id="nameField" property="name"/>
+                <textField id="surnameField" property="surname"/>
+                <textField id="numberField" property="number"/>
+                <entityPicker id="teamField" property="team">
+                    <actions>
+                        <action id="entityLookup" type="entity_lookup"/>
+                        <action id="entityClear" type="entity_clear"/>
+                    </actions>
+                </entityPicker>
+            </column>
+        </form>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

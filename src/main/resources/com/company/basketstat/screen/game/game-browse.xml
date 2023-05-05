@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        xmlns:c="http://jmix.io/schema/ui/jpql-condition"
+        caption="msg://gameBrowse.caption"
+        focusComponent="gamesTable">
+    <data readOnly="true">
+        <collection id="gamesDc"
+                    class="com.company.basketstat.entity.Game">
+            <fetchPlan extends="_base">
+                <property name="teamOne" fetchPlan="_base">
+                    <property name="players" fetchPlan="_base"/>
+                </property>
+                <property name="teamTwo" fetchPlan="_base">
+                    <property name="players" fetchPlan="_base"/>
+                </property>
+                <property name="gameResult" fetchPlan="_base">
+                </property>
+            </fetchPlan>
+            <loader id="gamesDl">
+                <query>
+                    <![CDATA[select e from bst_Game e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="lookupSelectAction"
+                caption="msg:///actions.Select"
+                icon="LOOKUP_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="lookupCancelAction"
+                caption="msg:///actions.Cancel"
+                icon="LOOKUP_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="gamesTable" spacing="true">
+        <filter id="filter"
+                dataLoader="gamesDl">
+            <properties include=".*"/>
+        </filter>
+        <table id="gamesTable"
+               width="100%"
+               dataContainer="gamesDc">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+            </actions>
+            <columns>
+                <column id="createdDate" caption="msg://gameDate"/>
+                <column id="teamOne"/>
+                <column id="teamTwo"/>
+                <column id="teamOneScore"/>
+                <column id="teamTwoScore"/>
+                <column id="gameStatus"/>
+                <column id="gameResult"/>
+            </columns>
+            <simplePagination/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="gamesTable.create"/>
+                <button id="editBtn" action="gamesTable.edit"/>
+                <button id="removeBtn" action="gamesTable.remove"/>
+            </buttonsPanel>
+        </table>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>
