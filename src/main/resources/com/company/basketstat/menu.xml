@@ -2,8 +2,6 @@
 <menu-config xmlns="http://jmix.io/schema/ui/menu">
 
     <menu id="application" caption="msg://com.company.basketstat/menu.application" insertBefore="administration">
-        <item screen="bst_User.browse" caption="msg://com.company.basketstat.screen.user/UserBrowse.caption"/>
-        <item screen="themeSettingsScreen" caption="msg://io.jmix.ui.app.themesettings/themeSettings.caption"/>
         <item screen="bst_Player.browse" caption="msg://com.company.basketstat.screen.player/playerBrowse.menu"/>
         <item screen="bst_Team.browse" caption="msg://com.company.basketstat.screen.team/teamBrowse.menu"/>
         <item screen="bst_Game.browse" caption="msg://com.company.basketstat.screen.game/gameBrowse.menu"/>

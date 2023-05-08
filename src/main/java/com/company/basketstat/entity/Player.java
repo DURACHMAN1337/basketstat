@@ -55,8 +55,8 @@ public class Player extends BaseUUIDEntity {
     }
 
     @InstanceName
-    @DependsOnProperties({"name", "number"})
+    @DependsOnProperties({"name", "surname", "number"})
     public String getInstanceName() {
-        return String.format("%s %s", name, number);
+        return String.format("%s %s %s", name, surname, number);
     }
 }

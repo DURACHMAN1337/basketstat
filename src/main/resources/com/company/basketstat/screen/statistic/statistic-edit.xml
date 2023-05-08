@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://jmix.io/schema/ui/window"
-        caption="msg://statisticEdit.caption"
-        focusComponent="form">
+        caption="msg://statisticEdit.caption">
     <data>
         <instance id="playerStatisticDc"
                   class="com.company.basketstat.entity.PlayerGameStat">
@@ -30,26 +29,197 @@
                 width="AUTO"
                 modal="true"
                 forceDialog="true"/>
-    <layout spacing="true" expand="scrollBox">
-        <scrollBox id="scrollBox" spacing="true">
-            <form id="form" dataContainer="playerStatisticDc">
-                <column width="300px">
-                    <textField id="freeThrowMadeField" property="statistic.freeThrowMade"/>
-                    <textField id="freeThrowMissField" property="statistic.freeThrowMiss"/>
-                    <textField id="twoPointMadeField" property="statistic.twoPointMade"/>
-                    <textField id="twoPointMissField" property="statistic.twoPointMiss"/>
-                    <textField id="threePointMadeField" property="statistic.threePointMade"/>
-                    <textField id="threePointMissField" property="statistic.threePointMiss"/>
-                    <textField id="turnOverField" property="statistic.turnOver"/>
-                    <textField id="assistField" property="statistic.assist"/>
-                    <textField id="reboundField" property="statistic.rebound"/>
-                    <textField id="stealField" property="statistic.steal"/>
-                    <textField id="blockField" property="statistic.block" caption="msg://block"/>
-                    <textField id="foulField" property="statistic.foul"/>
-                </column>
-            </form>
-        </scrollBox>
-        <hbox id="editActions" spacing="true">
+
+    <layout spacing="true">
+        <vbox id="mainBox" width="100%" height="100%" spacing="true">
+            <hbox width="100%">
+                <vbox id="freeThrowBox" width="300px" stylename="shadow-box" spacing="true">
+                    <label id="freeThrowCaptionLabel" stylename="bold h2" value="msg://freeThrow.caption"
+                           align="TOP_CENTER"/>
+                    <vbox id="freeThrowMadeBox" align="TOP_CENTER">
+                        <label id="freeThrowMadeCaptionLabel" stylename="h2" value="msg://made" align="TOP_CENTER"/>
+                        <hbox align="TOP_CENTER">
+                            <button id="freeThrowMadeMinusBtn" icon="font-icon:MINUS"/>
+                            <textField id="freeThrowMadeField"
+                                       width="60px"
+                                       enable="false"
+                                       stylename="align-center"
+                                       dataContainer="playerStatisticDc"
+                                       property="statistic.freeThrowMade"/>
+                            <button id="freeThrowMadePlusBtn" icon="font-icon:PLUS"/>
+
+                        </hbox>
+                    </vbox>
+                    <vbox id="freeThrowMissBox" align="TOP_CENTER">
+                        <label id="freeThrowMissCaptionLabel" stylename="h2" value="msg://miss" align="TOP_CENTER"/>
+                        <hbox align="TOP_CENTER">
+                            <button id="freeThrowMissMinusBtn" icon="font-icon:MINUS"/>
+                            <textField id="freeThrowMissField"
+                                       width="60px"
+                                       enable="false"
+                                       stylename="align-center"
+                                       dataContainer="playerStatisticDc"
+                                       property="statistic.freeThrowMiss"/>
+                            <button id="freeThrowMissPlusBtn" icon="font-icon:PLUS"/>
+                        </hbox>
+                    </vbox>
+                </vbox>
+                <vbox id="twoPointBox" width="300px" stylename="shadow-box" spacing="true">
+                    <label id="twoPointCaptionLabel" stylename="bold h2" value="msg://twoPoint.caption"
+                           align="TOP_CENTER"/>
+                    <vbox id="twoPointMadeBox" align="TOP_CENTER">
+                        <label id="twoPointMadeCaptionLabel" stylename="h2" value="msg://made" align="TOP_CENTER"/>
+                        <hbox align="TOP_CENTER">
+                            <button id="twoPointMadeMinusBtn" icon="font-icon:MINUS"/>
+                            <textField id="twoPointMadeField"
+                                       width="60px"
+                                       enable="false"
+                                       stylename="align-center"
+                                       dataContainer="playerStatisticDc"
+                                       property="statistic.twoPointMade"/>
+                            <button id="twoPointMadePlusBtn" icon="font-icon:PLUS"/>
+                        </hbox>
+                    </vbox>
+                    <vbox id="twoPointMissBox" align="TOP_CENTER">
+                        <label id="twoPointMissCaptionLabel" stylename="h2" value="msg://miss" align="TOP_CENTER"/>
+                        <hbox align="TOP_CENTER">
+                            <button id="twoPointMissMinusBtn" icon="font-icon:MINUS"/>
+                            <textField id="twoPointMissField"
+                                       width="60px"
+                                       enable="false"
+                                       stylename="align-center"
+                                       dataContainer="playerStatisticDc"
+                                       property="statistic.twoPointMiss"/>
+                            <button id="twoPointMissPlusBtn" icon="font-icon:PLUS"/>
+                        </hbox>
+                    </vbox>
+                </vbox>
+                <vbox id="threePointBox" width="300px" stylename="shadow-box" spacing="true">
+                    <label id="threePointCaptionLabel" stylename="bold h2" value="msg://threePoints.caption"
+                           align="TOP_CENTER"/>
+                    <vbox id="threePointMadeBox" align="TOP_CENTER">
+                        <label id="threePointMadeCaptionLabel" stylename="h2" value="msg://made" align="TOP_CENTER"/>
+                        <hbox align="TOP_CENTER">
+                            <button id="threePointMadeMinusBtn" icon="font-icon:MINUS"/>
+                            <textField id="threePointMadeField"
+                                       width="60px"
+                                       enable="false"
+                                       stylename="align-center"
+                                       dataContainer="playerStatisticDc"
+                                       property="statistic.threePointMade"/>
+                            <button id="threePointMadePlusBtn" icon="font-icon:PLUS"/>
+                        </hbox>
+                    </vbox>
+                    <vbox id="threePointMissBox" align="TOP_CENTER">
+                        <label id="threePointMissCaptionLabel" stylename="h2" value="msg://miss" align="TOP_CENTER"/>
+                        <hbox align="TOP_CENTER">
+                            <button id="threePointMissMinusBtn" icon="font-icon:MINUS"/>
+                            <textField id="threePointMissField"
+                                       width="60px"
+                                       enable="false"
+                                       stylename="align-center"
+                                       dataContainer="playerStatisticDc"
+                                       property="statistic.threePointMiss"/>
+                            <button id="threePointMissPlusBtn" icon="font-icon:PLUS"/>
+                        </hbox>
+                    </vbox>
+                </vbox>
+            </hbox>
+            <hbox width="100%">
+                <vbox id="turnOverAssistBox" width="300px" stylename="shadow-box" spacing="true">
+                    <label id="turnOverAssistCaptionLabel" stylename="bold h2" value="msg://turnOverAssist.caption"
+                           align="TOP_CENTER"/>
+                    <vbox id="turnOverBox" align="TOP_CENTER">
+                        <label id="turnOverCaptionLabel" stylename="h2" value="msg://turnOver" align="TOP_CENTER"/>
+                        <hbox align="TOP_CENTER">
+                            <button id="turnOverMinusBtn" icon="font-icon:MINUS"/>
+                            <textField id="turnOverField"
+                                       width="60px"
+                                       enable="false"
+                                       stylename="align-center"
+                                       dataContainer="playerStatisticDc"
+                                       property="statistic.turnOver"/>
+                            <button id="turnOverPlusBtn" icon="font-icon:PLUS"/>
+                        </hbox>
+                    </vbox>
+                    <vbox id="assistBox" align="TOP_CENTER">
+                        <label id="assistCaptionLabel" stylename="h2" value="msg://assist" align="TOP_CENTER"/>
+                        <hbox align="TOP_CENTER">
+                            <button id="assistMinusBtn" icon="font-icon:MINUS"/>
+                            <textField id="assistField"
+                                       width="60px"
+                                       enable="false"
+                                       stylename="align-center"
+                                       dataContainer="playerStatisticDc"
+                                       property="statistic.assist"/>
+                            <button id="assistPlusBtn" icon="font-icon:PLUS"/>
+                        </hbox>
+                    </vbox>
+                </vbox>
+
+                <vbox id="reboundStealBox" width="300px" stylename="shadow-box" spacing="true">
+                    <label id="reboundStealCaptionLabel" stylename="bold h2" value="msg://reboundSteal.caption"
+                           align="TOP_CENTER"/>
+                    <vbox id="reboundBox" align="TOP_CENTER">
+                        <label id="reboundCaptionLabel" stylename="h2" value="msg://rebound" align="TOP_CENTER"/>
+                        <hbox align="TOP_CENTER">
+                            <button id="reboundMinusBtn" icon="font-icon:MINUS"/>
+                            <textField id="reboundField"
+                                       width="60px"
+                                       enable="false"
+                                       stylename="align-center"
+                                       dataContainer="playerStatisticDc"
+                                       property="statistic.rebound"/>
+                            <button id="reboundPlusBtn" icon="font-icon:PLUS"/>
+                        </hbox>
+                    </vbox>
+                    <vbox id="stealBox" align="TOP_CENTER">
+                        <label id="stealCaptionLabel" stylename="h2" value="msg://steal" align="TOP_CENTER"/>
+                        <hbox align="TOP_CENTER">
+                            <button id="stealMinusBtn" icon="font-icon:MINUS"/>
+                            <textField id="stealField"
+                                       width="60px"
+                                       enable="false"
+                                       stylename="align-center"
+                                       dataContainer="playerStatisticDc"
+                                       property="statistic.steal"/>
+                            <button id="stealPlusBtn" icon="font-icon:PLUS"/>
+                        </hbox>
+                    </vbox>
+                </vbox>
+                <vbox id="blockFoulBox" width="300px" stylename="shadow-box" spacing="true">
+                    <label id="blockFoulCaptionLabel" stylename="bold h2" value="msg://blockFoul.caption"
+                           align="TOP_CENTER"/>
+                    <vbox id="blockBox" align="TOP_CENTER">
+                        <label id="blockCaptionLabel" stylename="h2" value="msg://block" align="TOP_CENTER"/>
+                        <hbox align="TOP_CENTER">
+                            <button id="blockMinusBtn" icon="font-icon:MINUS"/>
+                            <textField id="blockField"
+                                       width="60px"
+                                       enable="false"
+                                       stylename="align-center"
+                                       property="statistic.block"
+                                       dataContainer="playerStatisticDc"/>
+                            <button id="blockPlusBtn" icon="font-icon:PLUS"/>
+                        </hbox>
+                    </vbox>
+                    <vbox id="foulBox" align="TOP_CENTER">
+                        <label id="foulCaptionLabel" stylename="h2" value="msg://foul" align="TOP_CENTER"/>
+                        <hbox align="TOP_CENTER">
+                            <button id="foulMinusBtn" icon="font-icon:MINUS"/>
+                            <textField id="foulField"
+                                       width="60px"
+                                       enable="false"
+                                       stylename="align-center"
+                                       dataContainer="playerStatisticDc"
+                                       property="statistic.foul"/>
+                            <button id="foulPlusBtn" icon="font-icon:PLUS"/>
+                        </hbox>
+                    </vbox>
+                </vbox>
+            </hbox>
+        </vbox>
+        <hbox id="editActions" spacing="true" align="TOP_CENTER">
             <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
             <button id="closeBtn" action="windowClose"/>
         </hbox>

@@ -12,12 +12,6 @@
                     <property name="players" fetchPlan="_base"/>
                 </property>
                 <property name="gameResult" fetchPlan="_base">
-                    <property name="winner" fetchPlan="_base">
-                        <property name="players" fetchPlan="_base"/>
-                    </property>
-                    <property name="loser" fetchPlan="_base">
-                        <property name="players" fetchPlan="_base"/>
-                    </property>
                 </property>
             </fetchPlan>
             <loader/>
@@ -81,7 +75,7 @@
     <dialogMode height="600"
                 width="800"/>
     <layout spacing="true" expand="teamsSplit">
-        <split id="teamsSplit" width="100%" orientation="horizontal" pos="60">
+        <split id="teamsSplit" width="100%" orientation="horizontal">
             <vbox id="teamOneScoreBox"
                   align="TOP_CENTER"
                   height="100%"
@@ -89,7 +83,7 @@
                   expand="teamOneStatsTableBox">
                 <vbox id="teamOneLabelsBox"
                       align="TOP_CENTER"
-                      width="100%">
+                      width="100%" stylename="shadow-box">
                     <label id="teamOneNameLabel"
                            align="TOP_CENTER"
                            stylename="h2 bold"/>
@@ -107,20 +101,30 @@
                         </actions>
                     </entityPicker>
                 </vbox>
-                <table id="teamOneTable"
-                       caption="msg://teamOneTable.caption"
-                       captionAsHtml="true"
-                       stylename="borderless no-horizontal-lines no-vertical-lines"
-                       dataContainer="teamOneDc" align="BOTTOM_CENTER">
-                    <columns>
-                        <column id="name"/>
-                        <column id="surname"/>
-                        <column id="number"/>
-                    </columns>
-                </table>
-                <vbox id="teamOneStatsTableBox" width="100%">
+                <vbox id="teamOneTableBox"
+                      align="MIDDLE_CENTER"
+                      width="100%" stylename="shadow-box">
+                    <label id="teamOneRosterLabel"
+                           stylename="h2 bold"
+                           value="msg://teamOneTable.caption"
+                           align="TOP_CENTER"/>
+                    <table id="teamOneTable"
+                           captionAsHtml="true"
+                           stylename="borderless no-horizontal-lines no-vertical-lines"
+                           dataContainer="teamOneDc" align="BOTTOM_CENTER">
+                        <columns>
+                            <column id="name"/>
+                            <column id="surname"/>
+                            <column id="number"/>
+                        </columns>
+                    </table>
+                </vbox>
+                <vbox id="teamOneStatsTableBox" spacing="false" width="100%" stylename="shadow-box">
+                    <label id="thisMatchStatLabel"
+                           stylename="h2 bold"
+                           value="msg://teamTwoStatsTable"
+                           align="BOTTOM_CENTER"/>
                     <table id="teamOneStatsTable"
-                           caption="msg://teamTwoStatsTable"
                            dataContainer="teamOneStatsDc"
                            width="AUTO"
                            align="TOP_CENTER">
@@ -157,9 +161,9 @@
             <vbox id="teamTwoScoreBox"
                   spacing="true"
                   align="TOP_CENTER"
-                  height="100%"
-                  expand="teamTwoStatsTableBox">
-                <vbox id="teamTwoLabelsBox" width="100%">
+                  height="100%" expand="teamTwoStatsTableBox">
+                <vbox id="teamTwoLabelsBox" width="100%"
+                        stylename="shadow-box">
                     <label id="teamTwoNameLabel"
                            align="TOP_CENTER"
                            stylename="h2 bold"/>
@@ -178,21 +182,32 @@
                         </actions>
                     </entityPicker>
                 </vbox>
-                <table id="teamTwoTable"
-                       caption="msg://teamTwoTable.caption"
-                       stylename="borderless no-horizontal-lines no-vertical-lines"
-                       dataContainer="teamTwoDc"
-                       width="AUTO"
-                       align="BOTTOM_CENTER">
-                    <columns>
-                        <column id="name"/>
-                        <column id="surname"/>
-                        <column id="number"/>
-                    </columns>
-                </table>
-                <vbox id="teamTwoStatsTableBox" width="100%">
+                <vbox id="teamTwoTableBox"
+                      align="MIDDLE_CENTER"
+                      width="100%"
+                      stylename="shadow-box">
+                    <label id="teamTwoRosterLabel"
+                           stylename="h2 bold"
+                           value="msg://teamTwoTable.caption"
+                           align="TOP_CENTER"/>
+                    <table id="teamTwoTable"
+                           stylename="borderless no-horizontal-lines no-vertical-lines"
+                           dataContainer="teamTwoDc"
+                           width="AUTO"
+                           align="BOTTOM_CENTER">
+                        <columns>
+                            <column id="name"/>
+                            <column id="surname"/>
+                            <column id="number"/>
+                        </columns>
+                    </table>
+                </vbox>
+                <vbox id="teamTwoStatsTableBox" stylename="shadow-box" width="100%" align="TOP_CENTER">
+                    <label id="thisMatchStatLabelTWO"
+                           stylename="h2 bold"
+                           value="msg://teamTwoStatsTable"
+                           align="BOTTOM_CENTER"/>
                     <table id="teamTwoStatsTable"
-                           caption="msg://teamTwoStatsTable"
                            dataContainer="teamTwoStatsDc"
                            width="AUTO"
                            align="TOP_CENTER">
