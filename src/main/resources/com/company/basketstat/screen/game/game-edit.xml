@@ -11,14 +11,7 @@
                 <property name="teamTwo" fetchPlan="_base">
                     <property name="players" fetchPlan="_base"/>
                 </property>
-                <property name="gameResult" fetchPlan="_base">
-                    <property name="winner" fetchPlan="_base">
-                        <property name="players" fetchPlan="_base"/>
-                    </property>
-                    <property name="loser" fetchPlan="_base">
-                        <property name="players" fetchPlan="_base"/>
-                    </property>
-                </property>
+                <property name="gameResult" fetchPlan="_base"/>
             </fetchPlan>
             <loader/>
         </instance>
@@ -36,31 +29,29 @@
                 </query>
             </loader>
         </collection>
-        <collection id="teamOneStatsDc" class="com.company.basketstat.entity.PlayerGameStat">
+        <collection id="teamOneStatsDc" class="com.company.basketstat.entity.PlayerGameStatistic">
             <fetchPlan extends="_base">
                 <property name="player" fetchPlan="_base">
                     <property name="team" fetchPlan="_base"/>
                 </property>
                 <property name="game" fetchPlan="_base"/>
-                <property name="statistic" fetchPlan="_base"/>
             </fetchPlan>
             <loader id="teamOneStatsDl">
                 <query>
-                    <![CDATA[select e from bst_PlayerGameStat e where e.player = :teamOnePlayer and e.game = :game]]>
+                    <![CDATA[select e from bst_PlayerGameStatistic e where e.player = :teamOnePlayer and e.game = :game]]>
                 </query>
             </loader>
         </collection>
-        <collection id="teamTwoStatsDc" class="com.company.basketstat.entity.PlayerGameStat">
+        <collection id="teamTwoStatsDc" class="com.company.basketstat.entity.PlayerGameStatistic">
             <fetchPlan extends="_base">
                 <property name="player" fetchPlan="_base">
                     <property name="team" fetchPlan="_base"/>
                 </property>
                 <property name="game" fetchPlan="_base"/>
-                <property name="statistic" fetchPlan="_base"/>
             </fetchPlan>
             <loader id="teamTwoStatsDl">
                 <query>
-                    <![CDATA[select e from bst_PlayerGameStat e where e.player = :teamTwoPlayer and e.game = :game]]>
+                    <![CDATA[select e from bst_PlayerGameStatistic e where e.player = :teamTwoPlayer and e.game = :game]]>
                 </query>
             </loader>
         </collection>
@@ -125,29 +116,29 @@
                            width="AUTO"
                            align="TOP_CENTER">
                         <columns>
-                            <column id="statistic.freeThrowMade" caption="msg://statistic.freeThrowMade"
+                            <column id="freeThrowMade" caption="msg://statistic.freeThrowMade"
                                     description="msg://statistic.freeThrowMade.description"/>
-                            <column id="statistic.freeThrowMiss" caption="msg://statistic.freeThrowMiss"
+                            <column id="freeThrowMiss" caption="msg://statistic.freeThrowMiss"
                                     description="msg://statistic.freeThrowMiss.description"/>
-                            <column id="statistic.twoPointMade" caption="msg://statistic.twoPointMade"
+                            <column id="twoPointMade" caption="msg://statistic.twoPointMade"
                                     description="msg://statistic.twoPointMade.description"/>
-                            <column id="statistic.twoPointMiss" caption="msg://statistic.twoPointMiss"
+                            <column id="twoPointMiss" caption="msg://statistic.twoPointMiss"
                                     description="msg://statistic.twoPointMiss.description"/>
-                            <column id="statistic.threePointMade" caption="msg://statistic.threePointMade"
+                            <column id="threePointMade" caption="msg://statistic.threePointMade"
                                     description="msg://statistic.threePointMade.description"/>
-                            <column id="statistic.threePointMiss" caption="msg://statistic.threePointMiss"
+                            <column id="threePointMiss" caption="msg://statistic.threePointMiss"
                                     description="msg://statistic.threePointMiss.description"/>
-                            <column id="statistic.assist" caption="msg://statistic.assist"
+                            <column id="assist" caption="msg://statistic.assist"
                                     description="msg://statistic.assist.description"/>
-                            <column id="statistic.block" caption="msg://statistic.block"
+                            <column id="block" caption="msg://statistic.block"
                                     description="msg://statistic.block.description"/>
-                            <column id="statistic.foul" caption="msg://statistic.foul"
+                            <column id="foul" caption="msg://statistic.foul"
                                     description="msg://statistic.foul.description"/>
-                            <column id="statistic.rebound" caption="msg://statistic.rebound"
+                            <column id="rebound" caption="msg://statistic.rebound"
                                     description="msg://statistic.rebound.description"/>
-                            <column id="statistic.steal" caption="msg://statistic.steal"
+                            <column id="steal" caption="msg://statistic.steal"
                                     description="msg://statistic.steal.description"/>
-                            <column id="statistic.turnOver" caption="msg://statistic.turnOver"
+                            <column id="turnOver" caption="msg://statistic.turnOver"
                                     description="msg://statistic.turnOver.description"/>
                         </columns>
                     </table>
@@ -197,29 +188,29 @@
                            width="AUTO"
                            align="TOP_CENTER">
                         <columns>
-                            <column id="statistic.freeThrowMade" caption="msg://statistic.freeThrowMade"
+                            <column id="freeThrowMade" caption="msg://statistic.freeThrowMade"
                                     description="msg://statistic.freeThrowMade.description"/>
-                            <column id="statistic.freeThrowMiss" caption="msg://statistic.freeThrowMiss"
+                            <column id="freeThrowMiss" caption="msg://statistic.freeThrowMiss"
                                     description="msg://statistic.freeThrowMiss.description"/>
-                            <column id="statistic.twoPointMade" caption="msg://statistic.twoPointMade"
+                            <column id="twoPointMade" caption="msg://statistic.twoPointMade"
                                     description="msg://statistic.twoPointMade.description"/>
-                            <column id="statistic.twoPointMiss" caption="msg://statistic.twoPointMiss"
+                            <column id="twoPointMiss" caption="msg://statistic.twoPointMiss"
                                     description="msg://statistic.twoPointMiss.description"/>
-                            <column id="statistic.threePointMade" caption="msg://statistic.threePointMade"
+                            <column id="threePointMade" caption="msg://statistic.threePointMade"
                                     description="msg://statistic.threePointMade.description"/>
-                            <column id="statistic.threePointMiss" caption="msg://statistic.threePointMiss"
+                            <column id="threePointMiss" caption="msg://statistic.threePointMiss"
                                     description="msg://statistic.threePointMiss.description"/>
-                            <column id="statistic.assist" caption="msg://statistic.assist"
+                            <column id="assist" caption="msg://statistic.assist"
                                     description="msg://statistic.assist.description"/>
-                            <column id="statistic.block" caption="msg://statistic.block"
+                            <column id="block" caption="msg://statistic.block"
                                     description="msg://statistic.block.description"/>
-                            <column id="statistic.foul" caption="msg://statistic.foul"
+                            <column id="foul" caption="msg://statistic.foul"
                                     description="msg://statistic.foul.description"/>
-                            <column id="statistic.rebound" caption="msg://statistic.rebound"
+                            <column id="rebound" caption="msg://statistic.rebound"
                                     description="msg://statistic.rebound.description"/>
-                            <column id="statistic.steal" caption="msg://statistic.steal"
+                            <column id="steal" caption="msg://statistic.steal"
                                     description="msg://statistic.steal.description"/>
-                            <column id="statistic.turnOver" caption="msg://statistic.turnOver"
+                            <column id="turnOver" caption="msg://statistic.turnOver"
                                     description="msg://statistic.turnOver.description"/>
                         </columns>
                     </table>

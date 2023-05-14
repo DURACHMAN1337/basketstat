@@ -3,10 +3,9 @@
         caption="msg://statisticEdit.caption"
         focusComponent="form">
     <data>
-        <instance id="playerStatisticDc"
-                  class="com.company.basketstat.entity.PlayerGameStat">
+        <instance id="playerGameStatisticDc"
+                  class="com.company.basketstat.entity.PlayerGameStatistic">
             <fetchPlan extends="_base">
-                <property name="statistic" fetchPlan="_base"/>
                 <property name="game" fetchPlan="_base"/>
                 <property name="player" fetchPlan="_base"/>
             </fetchPlan>
@@ -32,20 +31,20 @@
                 forceDialog="true"/>
     <layout spacing="true" expand="scrollBox">
         <scrollBox id="scrollBox" spacing="true">
-            <form id="form" dataContainer="playerStatisticDc">
+            <form id="form" dataContainer="playerGameStatisticDc">
                 <column width="300px">
-                    <textField id="freeThrowMadeField" property="statistic.freeThrowMade"/>
-                    <textField id="freeThrowMissField" property="statistic.freeThrowMiss"/>
-                    <textField id="twoPointMadeField" property="statistic.twoPointMade"/>
-                    <textField id="twoPointMissField" property="statistic.twoPointMiss"/>
-                    <textField id="threePointMadeField" property="statistic.threePointMade"/>
-                    <textField id="threePointMissField" property="statistic.threePointMiss"/>
-                    <textField id="turnOverField" property="statistic.turnOver"/>
-                    <textField id="assistField" property="statistic.assist"/>
-                    <textField id="reboundField" property="statistic.rebound"/>
-                    <textField id="stealField" property="statistic.steal"/>
-                    <textField id="blockField" property="statistic.block" caption="msg://block"/>
-                    <textField id="foulField" property="statistic.foul"/>
+                    <textField id="freeThrowMadeField" property="freeThrowMade"/>
+                    <textField id="freeThrowMissField" property="freeThrowMiss"/>
+                    <textField id="twoPointMadeField" property="twoPointMade"/>
+                    <textField id="twoPointMissField" property="twoPointMiss"/>
+                    <textField id="threePointMadeField" property="threePointMade"/>
+                    <textField id="threePointMissField" property="threePointMiss"/>
+                    <textField id="turnOverField" property="turnOver"/>
+                    <textField id="assistField" property="assist"/>
+                    <textField id="reboundField" property="rebound"/>
+                    <textField id="stealField" property="steal"/>
+                    <textField id="blockField" property="block" caption="msg://block"/>
+                    <textField id="foulField" property="foul"/>
                 </column>
             </form>
         </scrollBox>

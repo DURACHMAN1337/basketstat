@@ -1,16 +1,15 @@
 package com.company.basketstat.entity;
 
+import io.jmix.core.metamodel.annotation.DependsOnProperties;
 import io.jmix.core.metamodel.annotation.JmixEntity;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToOne;
+import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.NotNull;
 
-@JmixEntity
-@Entity(name = "bst_Statistic")
-public class Statistic extends BaseUUIDEntity {
+@JmixEntity(name = "bst_Statistic")
+@MappedSuperclass
+public abstract class AbstractStatistic extends BaseUUIDEntity {
     @Column(name = "FREE_THROW_MADE")
     private Integer freeThrowMade = 0;
 
@@ -47,23 +46,12 @@ public class Statistic extends BaseUUIDEntity {
     @Column(name = "FOUL")
     private Integer foul = 0;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "statistic")
-    private PlayerStatistic playerStatistic;
-
     public Integer getTurnOver() {
         return turnOver;
     }
 
     public void setTurnOver(Integer turnOver) {
         this.turnOver = turnOver;
-    }
-
-    public PlayerStatistic getPlayerStatistic() {
-        return playerStatistic;
-    }
-
-    public void setPlayerStatistic(PlayerStatistic playerStatistic) {
-        this.playerStatistic = playerStatistic;
     }
 
     public Integer getFoul() {
@@ -153,4 +141,67 @@ public class Statistic extends BaseUUIDEntity {
     public void setFreeThrowMade(Integer freeThrowMade) {
         this.freeThrowMade = freeThrowMade;
     }
+
+    public String getStat(Integer madeThrow, Integer missThrow) {
+        String format = "%s $s";
+        return String.format(format,
+                getFieldGoalStat(madeThrow, missThrow),
+                getPercentStatString(madeThrow, missThrow));
+    }
+
+    @DependsOnProperties({"freeThrowMade", "freeThrowMiss"})
+    public String getFreeThrowStat() {
+        return getStat(twoPointMade, twoPointMiss);
+    }
+
+    @DependsOnProperties({"twoPointMade", "twoPointMiss"})
+    public String getTwoPointStat() {
+        return getStat(twoPointMade, twoPointMiss);
+    }
+
+    @DependsOnProperties({"freeThrowMade", "freeThrowMiss"})
+    public String getFieldGoalFreeThrow() {
+        return getFieldGoalStat(freeThrowMade, freeThrowMiss);
+    }
+
+    @DependsOnProperties({"freeThrowMade", "freeThrowMiss"})
+    public String getPercentFreeThrow() {
+        return getPercentStatString(freeThrowMade, freeThrowMiss);
+    }
+
+    @DependsOnProperties({"twoPointMade", "twoPointMiss"})
+    public String getFieldGoalTwoPointThrow() {
+        return getFieldGoalStat(twoPointMade, twoPointMiss);
+    }
+
+    @DependsOnProperties({"twoPointMade", "twoPointMiss"})
+    public String getPercentTwoPointThrow() {
+        return getPercentStatString(twoPointMade, twoPointMiss);
+    }
+
+    @DependsOnProperties({"threePointMade", "threePointMiss"})
+    public String getFieldGoalThreePointThrow() {
+        return getFieldGoalStat(twoPointMade, twoPointMiss);
+    }
+
+    @DependsOnProperties({"threePointMade", "threePointMiss"})
+    public String getPercentThreePointThrow() {
+        return getPercentStatString(twoPointMade, twoPointMiss);
+    }
+
+    public String getFieldGoalStat(@NotNull Integer madeThrow, @NotNull Integer missThrow) {
+        String format = "%d/%d";
+        int totalAttempts = madeThrow + missThrow;
+        return String.format(format, freeThrowMade, totalAttempts);
+    }
+
+    private String getPercentStatString(Integer madeThrow, Integer missThrow) {
+        return String.format("%.2f%%", getPercentStat(madeThrow, missThrow));
+    }
+
+    public Double getPercentStat(@NotNull Integer madeThrow, @NotNull Integer missThrow) {
+        double totalAttempts = madeThrow + missThrow;
+        return (madeThrow / totalAttempts) * 100;
+    }
+
 }

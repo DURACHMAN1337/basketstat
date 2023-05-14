@@ -39,8 +39,6 @@ public class GameEdit extends StandardEditor<Game> {
     @Autowired
     private Messages messages;
     @Autowired
-    private CollectionContainer<Player> teamOneDc;
-    @Autowired
     private CollectionLoader<Player> teamOneDl;
     @Autowired
     private CollectionLoader<Player> teamTwoDl;
@@ -55,29 +53,23 @@ public class GameEdit extends StandardEditor<Game> {
     @Autowired
     private Table<Player> teamOneTable;
     @Autowired
-    private CollectionContainer<PlayerGameStat> teamOneStatsDc;
+    private CollectionContainer<PlayerGameStatistic> teamOneStatsDc;
     @Autowired
-    private CollectionLoader<PlayerGameStat> teamOneStatsDl;
+    private CollectionLoader<PlayerGameStatistic> teamOneStatsDl;
     @Autowired
-    private CollectionLoader<PlayerGameStat> teamTwoStatsDl;
+    private CollectionLoader<PlayerGameStatistic> teamTwoStatsDl;
     @Autowired
-    private Table<PlayerGameStat> teamOneStatsTable;
+    private Table<PlayerGameStatistic> teamOneStatsTable;
     @Autowired
     private Table<Player> teamTwoTable;
     @Autowired
-    private CollectionContainer<PlayerGameStat> teamTwoStatsDc;
+    private CollectionContainer<PlayerGameStatistic> teamTwoStatsDc;
     @Autowired
-    private Table<PlayerGameStat> teamTwoStatsTable;
+    private Table<PlayerGameStatistic> teamTwoStatsTable;
     @Autowired
     private ScreenBuilders screenBuilders;
     @Autowired
     private GameStatService gameStatService;
-
-    @Subscribe
-    public void onInitEntity(InitEntityEvent<Game> event) {
-        event.getEntity().setTeamOneScore(0);
-        event.getEntity().setTeamTwoScore(0);
-    }
 
     @Subscribe
     public void onAfterShow(AfterShowEvent event) {
@@ -126,12 +118,9 @@ public class GameEdit extends StandardEditor<Game> {
     private void initPlayerGameStatisticFor(Team team) {
         SaveContext saveContext = new SaveContext();
         team.getPlayers().forEach(player -> {
-            PlayerGameStat playerGameStat = dataManager.create(PlayerGameStat.class);
+            PlayerGameStatistic playerGameStat = dataManager.create(PlayerGameStatistic.class);
             playerGameStat.setPlayer(player);
-            Statistic statistic = dataManager.create(Statistic.class);
-            playerGameStat.setStatistic(statistic);
             playerGameStat.setGame(getEditedEntity());
-            saveContext.saving(statistic);
             saveContext.saving(playerGameStat);
             saveContext.saving(getEditedEntity());
         });
@@ -207,7 +196,7 @@ public class GameEdit extends StandardEditor<Game> {
             }
         });
         teamTwoTable.setItemClickAction(new BaseAction("showEditorTeamTwo").withHandler(e -> {
-            Screen editor = screenBuilders.editor(PlayerGameStat.class, this)
+            Screen editor = screenBuilders.editor(PlayerGameStatistic.class, this)
                     .editEntity(
                             gameStatService.getPlayerGameStatBy(getEditedEntity(), teamTwoTable.getSingleSelected()))
                     .build();
@@ -252,7 +241,7 @@ public class GameEdit extends StandardEditor<Game> {
         });
 
         teamOneTable.setItemClickAction(new BaseAction("showEditorTeamOne").withHandler(e -> {
-            Screen editor = screenBuilders.editor(PlayerGameStat.class, this)
+            Screen editor = screenBuilders.editor(PlayerGameStatistic.class, this)
                     .editEntity(gameStatService.getPlayerGameStatBy(getEditedEntity(), teamOneTable.getSingleSelected()))
                     .build();
             editor.addAfterCloseListener(e1 -> {

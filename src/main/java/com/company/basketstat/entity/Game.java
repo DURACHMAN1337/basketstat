@@ -1,11 +1,8 @@
 package com.company.basketstat.entity;
 
-import io.jmix.core.entity.annotation.SystemLevel;
 import io.jmix.core.metamodel.annotation.JmixEntity;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @JmixEntity
 @Entity(name = "bst_Game")
@@ -22,10 +19,10 @@ public class Game extends BaseUUIDEntity {
     private Team teamTwo;
 
     @Column(name = "TEAM_ONE_SCORE")
-    private Integer teamOneScore;
+    private Integer teamOneScore = 0;
 
     @Column(name = "TEAM_TWO_SCORE")
-    private Integer teamTwoScore;
+    private Integer teamTwoScore = 0;
 
     @JoinColumn(name = "GAME_RESULT_ID")
     @OneToOne(fetch = FetchType.LAZY)
