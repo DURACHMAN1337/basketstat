@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fragment xmlns="http://jmix.io/schema/ui/fragment">
+    <data>
+        <instance id="gameDc"
+                  class="com.company.basketstat.entity.Game"
+                  provided="true">
+            <instance id="teamOneDc"
+                      property="teamOne"
+                      provided="true">
+                <collection id="teamOnePlayersDc"
+                            property="players"
+                            provided="true"/>
+            </instance>
+            <instance id="teamTwoDc"
+                      property="teamTwo"
+                      provided="true">
+                <collection id="teamTwoPlayersDc"
+                            property="players"
+                            provided="true"/>
+            </instance>
+            <fetchPlan extends="_base">
+                <property name="teamOne" fetchPlan="_base">
+                    <property name="players" fetchPlan="_base"/>
+                </property>
+                <property name="teamTwo" fetchPlan="_base">
+                    <property name="players" fetchPlan="_base"/>
+                </property>
+                <property name="gameResult" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader/>
+        </instance>
+        <collection id="teamStatsDc"
+                    class="com.company.basketstat.entity.PlayerGameStatistic">
+            <fetchPlan extends="_base">
+                <property name="player" fetchPlan="_base">
+                    <property name="team" fetchPlan="_base"/>
+                </property>
+                <property name="game" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="teamStatsDl">
+                <query>
+                    <![CDATA[select e from bst_PlayerGameStatistic e where e.player in :players and e.game = :game]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <layout>
+        <vbox id="teamScoreBox"
+              align="TOP_CENTER"
+              height="100%"
+              spacing="true"
+              expand="teamStatsBox">
+            <vbox id="teamInfoBox"
+                  width="100%"
+                  spacing="true">
+            </vbox>
+            <vbox id="teamStatsBox"
+                  width="100%"
+                  spacing="true">
+                <fragment id="teamStatEditFragment"
+                          screen="bst_StatEditFragment"/>
+            </vbox>
+        </vbox>
+    </layout>
+</fragment>

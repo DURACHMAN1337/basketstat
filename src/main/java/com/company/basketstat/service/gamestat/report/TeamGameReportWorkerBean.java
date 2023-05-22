@@ -21,9 +21,12 @@ public class TeamGameReportWorkerBean implements TeamGameReportWorker {
         Map<String, Object> header = new HashMap<>();
         Team team = (Team) params.get("team");
         Game game = (Game) params.get("game");
-        header.put("teamName", team.getName());
-        header.put("date", simpleDateFormat.format(game.getCreatedDate()));
-        return Collections.singletonList(header);
+        header.put("header", getHeaderLine(game, team));
+        return List.of(header);
+    }
+
+    private Object getHeaderLine(Game game, Team team) {
+        return "Команда : " + team.getName() + " от " +  simpleDateFormat.format(game.getCreatedDate());
     }
 
     @Override
@@ -42,7 +45,7 @@ public class TeamGameReportWorkerBean implements TeamGameReportWorker {
         line.put("name", playerGameStat.getPlayer().getName());
         line.put("freeThrow", playerGameStat.getFreeThrowStat());
         line.put("twoPoint", playerGameStat.getTwoPointStat());
-        line.put("threePoint", playerGameStat.getFreeThrowStat());
+        line.put("threePoint", playerGameStat.getThreePointStat());
         line.put("rebound", playerGameStat.getRebound().toString());
         line.put("assist", playerGameStat.getAssist().toString());
         line.put("turnOver", playerGameStat.getTurnOver().toString());
@@ -54,7 +57,7 @@ public class TeamGameReportWorkerBean implements TeamGameReportWorker {
         Team team = (Team) params.get("team");
         Game game = (Game) params.get("game");
         return dataManager.load(PlayerGameStatistic.class)
-                .query("e.game.id = ?1 and e.player.team.id = ?2 ", game, team)
+                .query("e.game.id = ?1 and e.player.team.id = ?2 ", game.getId(), team.getId())
                 .list();
     }
 }

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://jmix.io/schema/ui/window"
-        xmlns:c="http://jmix.io/schema/ui/jpql-condition"
         caption="msg://gameBrowse.caption"
         focusComponent="gamesTable">
     <data readOnly="true">
@@ -48,9 +47,15 @@
                width="100%"
                dataContainer="gamesDc">
             <actions>
-                <action id="create" type="create"/>
-                <action id="edit" type="edit"/>
-                <action id="remove" type="remove"/>
+                <action id="create"
+                        caption="msg://actions.Create"
+                        type="create"/>
+                <action id="edit"
+                        caption="msg://actions.Edit"
+                        type="edit"/>
+                <action id="remove"
+                        caption="msg://actions.Remove"
+                        type="remove"/>
             </actions>
             <columns>
                 <column id="createdDate" caption="msg://gameDate"/>

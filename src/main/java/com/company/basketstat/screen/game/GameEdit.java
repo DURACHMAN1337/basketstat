@@ -1,19 +1,16 @@
 package com.company.basketstat.screen.game;
 
-import com.company.basketstat.entity.*;
-import com.company.basketstat.service.gamestat.GameStatService;
-import io.jmix.core.DataManager;
+import com.company.basketstat.entity.Game;
+import com.company.basketstat.entity.GameStatus;
+import com.company.basketstat.entity.Team;
+import com.company.basketstat.screen.teamonescorebox.TeamOneScoreBox;
+import com.company.basketstat.screen.teamtwoscorebox.TeamTwoScoreBox;
 import io.jmix.core.Messages;
-import io.jmix.core.SaveContext;
 import io.jmix.ui.Notifications;
-import io.jmix.ui.ScreenBuilders;
-import io.jmix.ui.action.BaseAction;
 import io.jmix.ui.component.Button;
-import io.jmix.ui.component.EntityPicker;
-import io.jmix.ui.component.Label;
-import io.jmix.ui.component.Table;
-import io.jmix.ui.model.CollectionContainer;
-import io.jmix.ui.model.CollectionLoader;
+import io.jmix.ui.model.DataContext;
+import io.jmix.ui.model.InstanceContainer;
+import io.jmix.ui.model.InstancePropertyContainer;
 import io.jmix.ui.screen.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,115 +19,99 @@ import org.springframework.beans.factory.annotation.Autowired;
 @UiDescriptor("game-edit.xml")
 @EditedEntityContainer("gameDc")
 public class GameEdit extends StandardEditor<Game> {
+
     @Autowired
-    private Button commitAndCloseBtn;
-    @Autowired
-    private EntityPicker<Team> teamTwoField;
-    @Autowired
-    private EntityPicker<Team> teamOneField;
-    @Autowired
-    private Label<String> teamOneNameLabel;
-    @Autowired
-    private Label<String> teamOneScoreLabel;
-    @Autowired
-    private Label<String> teamTwoNameLabel;
-    @Autowired
-    private Label<String> teamTwoScoreLabel;
+    private Notifications notifications;
     @Autowired
     private Messages messages;
     @Autowired
-    private CollectionLoader<Player> teamOneDl;
-    @Autowired
-    private CollectionLoader<Player> teamTwoDl;
+    private Button commitAndCloseBtn;
     @Autowired
     private Button startGameBtn;
     @Autowired
     private Button closeBtn;
     @Autowired
-    private Notifications notifications;
+    private InstancePropertyContainer<Team> teamOneDc;
     @Autowired
-    private DataManager dataManager;
+    private InstancePropertyContainer<Team> teamTwoDc;
     @Autowired
-    private Table<Player> teamOneTable;
+    private TeamTwoScoreBox teamTwoScoreBox;
     @Autowired
-    private CollectionContainer<PlayerGameStatistic> teamOneStatsDc;
+    private TeamOneScoreBox teamOneScoreBox;
     @Autowired
-    private CollectionLoader<PlayerGameStatistic> teamOneStatsDl;
+    private DataContext dataContext;
     @Autowired
-    private CollectionLoader<PlayerGameStatistic> teamTwoStatsDl;
-    @Autowired
-    private Table<PlayerGameStatistic> teamOneStatsTable;
-    @Autowired
-    private Table<Player> teamTwoTable;
-    @Autowired
-    private CollectionContainer<PlayerGameStatistic> teamTwoStatsDc;
-    @Autowired
-    private Table<PlayerGameStatistic> teamTwoStatsTable;
-    @Autowired
-    private ScreenBuilders screenBuilders;
-    @Autowired
-    private GameStatService gameStatService;
+    private InstanceContainer<Game> gameDc;
+
 
     @Subscribe
-    public void onAfterShow(AfterShowEvent event) {
-        if (getEditedEntity().getGameStatus() != null) {
-            gameStartedFieldsVisibility();
+    public void onBeforeShow(BeforeShowEvent event) {
+        initGameDc();
+        initTeamDc();
+        adjustVisiblyButton();
+        loadStatistic();
+    }
+
+    private void initGameDc() {
+        try {
+            gameDc.getItem();
+        } catch (IllegalStateException e) {
+            gameDc.setItem(getEditedEntity());
         }
-        setLabelsInitialValue();
-        initTeamOneField();
-        initTeamTwoField();
     }
 
-    @Subscribe
-    public void onBeforeCommitChanges(BeforeCommitChangesEvent event) {
-        GameResult gameResult = dataManager.create(GameResult.class);
-        SaveContext saveContext = new SaveContext();
-        Team winner = getEditedEntity().getTeamOneScore() > getEditedEntity().getTeamTwoScore() ?
-                getEditedEntity().getTeamOne() : getEditedEntity().getTeamTwo();
-        Team loser = getEditedEntity().getTeamOneScore() < getEditedEntity().getTeamTwoScore() ?
-                getEditedEntity().getTeamOne() : getEditedEntity().getTeamTwo();
-        gameResult.setGame(getEditedEntity());
-        gameResult.setWinner(winner);
-        gameResult.setTeamWinnerScore(winner.equals(getEditedEntity().getTeamOne()) ?
-                getEditedEntity().getTeamOneScore() : getEditedEntity().getTeamTwoScore());
-        gameResult.setTeamLoserFinalScore(loser.equals(getEditedEntity().getTeamOne()) ?
-                getEditedEntity().getTeamOneScore() : getEditedEntity().getTeamTwoScore());
-        gameResult.setLoser(loser);
-        gameResult.setGame(getEditedEntity());
-        saveContext.saving(gameResult);
-        getEditedEntity().setGameResult(gameResult);
-        getEditedEntity().setGameStatus(GameStatus.FINISHED);
-        saveContext.saving(getEditedEntity());
-        dataManager.save(saveContext);
+    private void loadStatistic() {
+        if (isGameWasStarted()) {
+            teamOneScoreBox.refreshTeamStatDataLoader(getEditedEntity());
+            teamTwoScoreBox.refreshTeamStatDataLoader(getEditedEntity());
+        }
     }
 
+    private void initTeamDc() {
+        teamOneDc.setItem(getEditedEntity().getTeamOne());
+        teamTwoDc.setItem(getEditedEntity().getTeamTwo());
+    }
+
+    private void adjustVisiblyButton() {
+        if (isGameStarted()) {
+            applyGameStartedFieldsVisibility();
+        }
+    }
+
+    private boolean isGameStarted() {
+        return GameStatus.STARTED.equals(getEditedEntity().getGameStatus());
+    }
+
+    private boolean isGameWasStarted() {
+        return GameStatus.STARTED.equals(getEditedEntity().getGameStatus())
+                || GameStatus.FINISHED.equals(getEditedEntity().getGameStatus());
+    }
 
     @Subscribe("startGameBtn")
     public void onStartGameBtnClick(Button.ClickEvent event) {
         if (validateTeamsFields()) {
-            gameStartedFieldsVisibility();
+            applyGameStartedFieldsVisibility();
             getEditedEntity().setGameStatus(GameStatus.STARTED);
-            initPlayerGameStatisticFor(getEditedEntity().getTeamOne());
-            initPlayerGameStatisticFor(getEditedEntity().getTeamTwo());
+            teamOneScoreBox.initPlayerGameStatistic();
+            teamTwoScoreBox.initPlayerGameStatistic();
         }
     }
 
-    private void initPlayerGameStatisticFor(Team team) {
-        SaveContext saveContext = new SaveContext();
-        team.getPlayers().forEach(player -> {
-            PlayerGameStatistic playerGameStat = dataManager.create(PlayerGameStatistic.class);
-            playerGameStat.setPlayer(player);
-            playerGameStat.setGame(getEditedEntity());
-            saveContext.saving(playerGameStat);
-            saveContext.saving(getEditedEntity());
-        });
-        dataManager.save(saveContext);
+    private void applyGameStartedFieldsVisibility() {
+        teamOneScoreBox.setEditableForTeamField(false);
+        teamTwoScoreBox.setEditableForTeamField(false);
+        commitAndCloseBtn.setVisible(true);
+        startGameBtn.setVisible(false);
+        closeBtn.setVisible(false);
     }
 
     private Boolean validateTeamsFields() {
-        Team teamOne = teamOneField.getValue();
-        Team teamTwo = teamTwoField.getValue();
-        if (teamOne == null || teamTwo == null) {
+        Team teamOne;
+        Team teamTwo;
+        try {
+            teamOne = teamOneDc.getItem();
+            teamTwo = teamTwoDc.getItem();
+        } catch (IllegalStateException e) {
             showWarningNotification("emptyTeam");
             return false;
         }
@@ -156,130 +137,9 @@ public class GameEdit extends StandardEditor<Game> {
         }
     }
 
-    private void gameStartedFieldsVisibility() {
-        commitAndCloseBtn.setVisible(true);
-        startGameBtn.setVisible(false);
-        closeBtn.setVisible(false);
-        teamOneField.setEditable(false);
-        teamTwoField.setEditable(false);
+    @Subscribe
+    public void onBeforeCommitChanges(BeforeCommitChangesEvent event) {
+        dataContext.merge(teamOneScoreBox.getTeamStatsDc().getItems());
+        dataContext.merge(teamTwoScoreBox.getTeamStatsDc().getItems());
     }
-
-
-    private void initTeamTwoField() {
-        if (teamTwoField.getValue() != null) {
-            teamTwoDl.setParameter("teamTwo", teamTwoField.getValue());
-            teamTwoDl.load();
-            teamTwoNameLabelValue(getEditedEntity().getTeamTwo().getName());
-            teamTwoScoreLabelValue(getEditedEntity().getTeamTwo().getName(), getEditedEntity().getTeamTwoScore());
-        }
-
-        teamTwoField.addValueChangeListener(e -> {
-            if (e.getValue() != null) {
-                getEditedEntity().setTeamTwo(e.getValue());
-                teamTwoNameLabelValue(getEditedEntity().getTeamTwo().getName());
-                teamTwoScoreLabelValue(getEditedEntity().getTeamTwo().getName(),
-                        getEditedEntity().getTeamOneScore());
-                teamTwoDl.setParameter("teamTwo", e.getValue());
-                teamTwoDl.load();
-            }
-        });
-
-        teamTwoTable.addSelectionListener(e -> {
-            Player singleSelected = teamTwoTable.getSingleSelected();
-            if (singleSelected != null) {
-                teamTwoStatsDl.setParameter("teamTwoPlayer", singleSelected);
-                teamTwoStatsDl.setParameter("game", getEditedEntity());
-                teamTwoStatsDl.load();
-            } else {
-                teamTwoStatsDc.getMutableItems().clear();
-                teamTwoStatsTable.repaint();
-            }
-        });
-        teamTwoTable.setItemClickAction(new BaseAction("showEditorTeamTwo").withHandler(e -> {
-            Screen editor = screenBuilders.editor(PlayerGameStatistic.class, this)
-                    .editEntity(
-                            gameStatService.getPlayerGameStatBy(getEditedEntity(), teamTwoTable.getSingleSelected()))
-                    .build();
-            editor.addAfterCloseListener(e1 -> {
-                if (e1.closedWith(StandardOutcome.COMMIT)) {
-                    teamTwoStatsDl.load();
-                }
-            });
-            editor.show();
-        }));
-
-    }
-
-    private void initTeamOneField() {
-        if (teamOneField.getValue() != null) {
-            teamOneDl.setParameter("teamOne", teamOneField.getValue());
-            teamOneDl.load();
-            teamOneNameLabelValue(getEditedEntity().getTeamOne().getName());
-            teamOneScoreLabelValue(getEditedEntity().getTeamOne().getName(), getEditedEntity().getTeamOneScore());
-        }
-
-        teamOneField.addValueChangeListener(e -> {
-            if (e.getValue() != null) {
-                getEditedEntity().setTeamOne(e.getValue());
-                teamOneNameLabelValue(getEditedEntity().getTeamOne().getName());
-                teamOneScoreLabelValue(getEditedEntity().getTeamOne().getName(),
-                        getEditedEntity().getTeamOneScore());
-                teamOneDl.setParameter("teamOne", e.getValue());
-                teamOneDl.load();
-            }
-        });
-        teamOneTable.addSelectionListener(e -> {
-            Player singleSelected = teamOneTable.getSingleSelected();
-            if (singleSelected != null) {
-                teamOneStatsDl.setParameter("teamOnePlayer", singleSelected);
-                teamOneStatsDl.setParameter("game", getEditedEntity());
-                teamOneStatsDl.load();
-            } else {
-                teamOneStatsDc.getMutableItems().clear();
-                teamOneStatsTable.repaint();
-            }
-        });
-
-        teamOneTable.setItemClickAction(new BaseAction("showEditorTeamOne").withHandler(e -> {
-            Screen editor = screenBuilders.editor(PlayerGameStatistic.class, this)
-                    .editEntity(gameStatService.getPlayerGameStatBy(getEditedEntity(), teamOneTable.getSingleSelected()))
-                    .build();
-            editor.addAfterCloseListener(e1 -> {
-                if (e1.closedWith(StandardOutcome.COMMIT)) {
-                    teamOneStatsDl.load();
-                }
-            });
-            editor.show();
-        }));
-    }
-
-    private void setLabelsInitialValue() {
-        teamOneNameLabelValue("");
-        teamTwoNameLabelValue("");
-        teamOneScoreLabelValue("Команда 1", getEditedEntity().getTeamOneScore());
-        teamTwoScoreLabelValue("Команда 2", getEditedEntity().getTeamTwoScore());
-    }
-
-    private void teamOneNameLabelValue(String value) {
-        teamOneNameLabel.setValue(messages.formatMessage(getClass(), "teamOneNameLabel.value", value));
-    }
-
-    private void teamOneScoreLabelValue(String teamName, Integer score) {
-        teamOneScoreLabel.setValue(messages.formatMessage(getClass(),
-                "teamOneScoreLabel.value",
-                teamName,
-                score.toString()));
-    }
-
-    private void teamTwoNameLabelValue(String value) {
-        teamTwoNameLabel.setValue(messages.formatMessage(getClass(), "teamTwoNameLabel.value", value));
-    }
-
-    private void teamTwoScoreLabelValue(String teamName, Integer score) {
-        teamTwoScoreLabel.setValue(messages.formatMessage(getClass(),
-                "teamTwoScoreLabel.value",
-                teamName,
-                score.toString()));
-    }
-
 }

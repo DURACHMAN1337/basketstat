@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fragment xmlns="http://jmix.io/schema/ui/fragment">
+    <data>
+        <instance id="playerGameStatisticDc"
+                  class="com.company.basketstat.entity.PlayerGameStatistic"
+                  fetchPlan="_local"/>
+    </data>
+    <layout spacing="true">
+        <gridLayout id="teamOnePointStatGrid"
+                    width="100%"
+                    spacing="true">
+            <columns count="4"/>
+            <rows>
+                <row id="headerGridRow">
+                    <label value=""/>
+                    <label value="msg://com.company.basketstat.screen.game/Goals"
+                           align="MIDDLE_CENTER"/>
+                    <label value=""/>
+                    <label value="msg://com.company.basketstat.screen.game/Fields"
+                           align="MIDDLE_CENTER"/>
+                </row>
+                <row id="freeThrowGrid">
+                    <label value="msg://freeThrows"/>
+                    <hbox  align="MIDDLE_CENTER">
+                        <button id="minusFreeThrowMade"
+                                caption="-"/>
+                        <textField id="freeThrowMadeField"
+                                   dataContainer="playerGameStatisticDc"
+                                   property="freeThrowMade"
+                                   width="60px"/>
+                        <button id="plusFreeThrowMade"
+                                caption="+"/>
+                    </hbox>
+                    <label value=""/>
+                    <hbox  align="MIDDLE_CENTER">
+                        <button id="minusFreeThrowMiss"
+                                caption="-"/>
+                        <textField id="freeThrowMissField"
+                                   dataContainer="playerGameStatisticDc"
+                                   property="freeThrowMiss"
+                                   width="60px"/>
+                        <button id="plusFreeThrowMiss"
+                                caption="+"/>
+                    </hbox>
+                </row>
+                <row id="twoPointThrowGrid">
+                    <label value="msg://twoPointThrow"/>
+                    <hbox  align="MIDDLE_CENTER">
+                        <button id="minusTwoPointThrowMade"
+                                caption="-"/>
+                        <textField id="twoPointThrowMadeField"
+                                   dataContainer="playerGameStatisticDc"
+                                   property="twoPointMade"
+                                   width="60px"/>
+                        <button id="plusTwoPointThrowMade"
+                                caption="+"/>
+                    </hbox>
+                    <label value=""/>
+                    <hbox align="MIDDLE_CENTER">
+                        <button id="minusTwoPointThrowMiss"
+                                caption="-"/>
+                        <textField id="twoPointThrowMissField"
+                                   dataContainer="playerGameStatisticDc"
+                                   property="twoPointMiss"
+                                   width="60px"/>
+                        <button id="plusTwoPointThrowMiss"
+                                caption="+"/>
+                    </hbox>
+                </row>
+                <row id="threePointThrowGrid">
+                    <label value="msg://threePointThrows"/>
+                    <hbox align="MIDDLE_CENTER">
+                        <button id="minusThreePointThrowMade"
+                                caption="-"/>
+                        <textField id="threePointThrowMadeField"
+                                   dataContainer="playerGameStatisticDc"
+                                   property="threePointMade"
+                                   width="60px"/>
+                        <button id="plusThreePointThrowMade"
+                                caption="+"/>
+                    </hbox>
+                    <label value=""/>
+                    <hbox id="threePointMissHBox"
+                          align="MIDDLE_CENTER">
+                        <button id="minusThreePointMiss"
+                                caption="-"/>
+                        <textField id="threePointMissField"
+                                   dataContainer="playerGameStatisticDc"
+                                   property="threePointMiss"
+                                   width="60px"/>
+                        <button id="plusThreePointMiss"
+                                caption="+"/>
+                    </hbox>
+                </row>
+                <row id="turnOverAssistRow">
+                    <label value="msg://turnOvers"/>
+                    <hbox id="turnOverHBox"
+                          align="MIDDLE_CENTER">
+                        <button id="minusTurnover"
+                                caption="-"/>
+                        <textField id="turnOverField"
+                                   dataContainer="playerGameStatisticDc"
+                                   property="turnOver"
+                                   width="60px"/>
+                        <button id="plusTurnover"
+                                caption="+"/>
+                    </hbox>
+                    <label value="msg://assists"/>
+                    <hbox id="assistsHBox" align="MIDDLE_CENTER">
+                        <button id="minusAssist"
+                                caption="-"/>
+                        <textField id="assistsField"
+                                   dataContainer="playerGameStatisticDc"
+                                   property="assist"
+                                   width="60px"/>
+                        <button id="plusAssist"
+                                caption="+"/>
+                    </hbox>
+                </row>
+                <row id="reboundStealRow">
+                    <label value="msg://rebounds"/>
+                    <hbox  align="MIDDLE_CENTER">
+                        <button id="minusRebounds"
+                                caption="-"/>
+                        <textField id="reboundField"
+                                   dataContainer="playerGameStatisticDc"
+                                   property="rebound"
+                                   width="60px"/>
+                        <button id="plusRebounds"
+                                caption="+"/>
+                    </hbox>
+                    <label value="msg://steals"/>
+                    <hbox id="stealHBox"
+                          align="MIDDLE_CENTER">
+                        <button id="minusSteal"
+                                caption="-"/>
+                        <textField id="stealField"
+                                   dataContainer="playerGameStatisticDc"
+                                   property="steal"
+                                   width="60px"/>
+                        <button id="plusSteal"
+                                caption="+"/>
+                    </hbox>
+                </row>
+                <row id="blockFoulRow">
+                    <label value="msg://block"/>
+                    <hbox id="blockHBox"
+                          align="MIDDLE_CENTER">
+                        <button id="minusBlock"
+                                caption="-"/>
+                        <textField id="blockShotsField"
+                                   dataContainer="playerGameStatisticDc"
+                                   property="block"
+                                   width="60px"/>
+                        <button id="plusBlock"
+                                caption="+"/>
+                    </hbox>
+                    <label value="msg://fouls"/>
+                    <hbox id="foulHBox"
+                          align="MIDDLE_CENTER">
+                        <button id="minusFoul"
+                                caption="-"/>
+                        <textField id="foulField"
+                                   dataContainer="playerGameStatisticDc"
+                                   property="foul"
+                                   width="60px"/>
+                        <button id="plusFoul"
+                                caption="+"/>
+                    </hbox>
+                </row>
+            </rows>
+        </gridLayout>
+    </layout>
+</fragment>

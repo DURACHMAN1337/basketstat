@@ -4,6 +4,7 @@ import io.jmix.core.metamodel.annotation.JmixEntity;
 
 import javax.persistence.*;
 
+@Table(name = "bst_Game")
 @JmixEntity
 @Entity(name = "bst_Game")
 public class Game extends BaseUUIDEntity {
@@ -34,6 +35,14 @@ public class Game extends BaseUUIDEntity {
 
     public void setGameStatus(GameStatus gameStatus) {
         this.gameStatus = gameStatus == null ? null : gameStatus.getId();
+    }
+
+    public void changeTeamOneScoreOn(Integer changeOn) {
+        teamOneScore += changeOn;
+    }
+
+    public void changeTeamTwoScoreOn(Integer changeOn) {
+        teamTwoScore += changeOn;
     }
 
     public GameResult getGameResult() {

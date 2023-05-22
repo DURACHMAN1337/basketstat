@@ -3,6 +3,7 @@ package com.company.basketstat.entity;
 import io.jmix.core.metamodel.annotation.DependsOnProperties;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 
+import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
@@ -143,7 +144,7 @@ public abstract class AbstractStatistic extends BaseUUIDEntity {
     }
 
     public String getStat(Integer madeThrow, Integer missThrow) {
-        String format = "%s $s";
+        String format = "%s %s";
         return String.format(format,
                 getFieldGoalStat(madeThrow, missThrow),
                 getPercentStatString(madeThrow, missThrow));
@@ -151,12 +152,17 @@ public abstract class AbstractStatistic extends BaseUUIDEntity {
 
     @DependsOnProperties({"freeThrowMade", "freeThrowMiss"})
     public String getFreeThrowStat() {
-        return getStat(twoPointMade, twoPointMiss);
+        return getStat(freeThrowMade, freeThrowMiss);
     }
 
     @DependsOnProperties({"twoPointMade", "twoPointMiss"})
     public String getTwoPointStat() {
         return getStat(twoPointMade, twoPointMiss);
+    }
+
+    @DependsOnProperties({"threePointMade", "threePointMiss"})
+    public String getThreePointStat() {
+        return getStat(threePointMade, threePointMiss);
     }
 
     @DependsOnProperties({"freeThrowMade", "freeThrowMiss"})
@@ -192,15 +198,21 @@ public abstract class AbstractStatistic extends BaseUUIDEntity {
     public String getFieldGoalStat(@NotNull Integer madeThrow, @NotNull Integer missThrow) {
         String format = "%d/%d";
         int totalAttempts = madeThrow + missThrow;
-        return String.format(format, freeThrowMade, totalAttempts);
+        return String.format(format, madeThrow, totalAttempts);
     }
 
     private String getPercentStatString(Integer madeThrow, Integer missThrow) {
-        return String.format("%.2f%%", getPercentStat(madeThrow, missThrow));
+        Double result = getPercentStat(madeThrow, missThrow);
+        if (result == null)
+            return  "";
+        return String.format("%.0f%%", getPercentStat(madeThrow, missThrow));
     }
 
+    @Nullable
     public Double getPercentStat(@NotNull Integer madeThrow, @NotNull Integer missThrow) {
         double totalAttempts = madeThrow + missThrow;
+        if (totalAttempts == 0)
+            return null;
         return (madeThrow / totalAttempts) * 100;
     }
 

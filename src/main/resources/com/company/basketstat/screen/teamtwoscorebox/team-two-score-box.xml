@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fragment xmlns="http://jmix.io/schema/ui/fragment"
+          caption=""
+          extends="com/company/basketstat/screen/teamscorebox/abstract-team-score-box.xml">
+    <layout>
+        <vbox id="teamScoreBox">
+            <vbox id="teamInfoBox">
+                <vbox id="teamTwoLabelsBox"
+                      align="TOP_CENTER"
+                      width="100%">
+                    <label id="teamTwoScoreLabel"
+                           align="TOP_CENTER"
+                           stylename="h1 bold"
+                           dataContainer="gameDc"
+                           property="teamTwoScore"/>
+                    <entityPicker id="teamTwoField"
+                                  align="TOP_CENTER"
+                                  property="teamTwo"
+                                  dataContainer="gameDc">
+                        <actions>
+                            <action id="entityLookup"
+                                    type="entity_lookup"/>
+                            <action id="entityClear"
+                                    type="entity_clear"/>
+                        </actions>
+                    </entityPicker>
+                </vbox>
+                <table id="teamTwoTable"
+                       captionAsHtml="true"
+                       dataContainer="teamTwoPlayersDc"
+                       stylename="borderless no-horizontal-lines no-vertical-lines"
+                       align="BOTTOM_CENTER"
+                       width="100%">
+                    <columns>
+                        <column id="name"/>
+                        <column id="surname"/>
+                        <column id="number"/>
+                    </columns>
+                </table>
+            </vbox>
+
+        </vbox>
+    </layout>
+</fragment>
